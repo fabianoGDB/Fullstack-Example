@@ -3,8 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var stringConnection = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(stringConnection));
+var connStr = builder.Configuration.GetConnectionString("DockerConnection");
+builder.Services.AddDbContext<AppDbContext>(
+    x =>
+    {
+        x.UseSqlServer(builder.Configuration.GetConnectionString("DockerConnection"));
+    }
+);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(x =>
