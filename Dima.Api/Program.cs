@@ -7,7 +7,7 @@ var connStr = builder.Configuration.GetConnectionString("DockerConnection");
 builder.Services.AddDbContext<AppDbContext>(
     x =>
     {
-        x.UseSqlServer(builder.Configuration.GetConnectionString("DockerConnection"));
+        x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     }
 );
 
