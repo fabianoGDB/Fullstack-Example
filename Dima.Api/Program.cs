@@ -44,11 +44,7 @@ app.Run();
 public class Request
 {
     public string Title { get; set; } = string.Empty;
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public int Type { get; set; }
-    public decimal Amount { get; set; }
-    public long CategoryId { get; set; }
-    public string UserId { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
 };
 
 // Reponse
@@ -62,13 +58,18 @@ public class Response
 
 // Handler
 
-public class Handler
+public class Handler(AppDbContext context)
 {
 
     public Response Handle(Request request)
     {
-        var category = new Category();
-        category.Title = "title";
-        return new Response { Id = 1, Title = request.Title };
+        var category = new Category
+        {
+            Title = request.Title,
+            Description = request.Description,
+        };
+        context.Categories.Add(category);
+        context.SaveChanges();
+        return new Response { Id = category.Id, Title = category.Title };
     }
 }
