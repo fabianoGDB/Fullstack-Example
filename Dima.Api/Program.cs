@@ -1,13 +1,14 @@
 using Dima.Api.Data;
+using Dima.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connStr = builder.Configuration.GetConnectionString("DockerConnection");
+var connStr = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(
     x =>
     {
-        x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+        x.UseSqlServer(builder.Configuration.GetConnectionString("DockerConnection"));
     }
 );
 
@@ -66,6 +67,8 @@ public class Handler
 
     public Response Handle(Request request)
     {
+        var category = new Category();
+        category.Title = "title";
         return new Response { Id = 1, Title = request.Title };
     }
 }
