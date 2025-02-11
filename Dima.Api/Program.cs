@@ -1,5 +1,9 @@
+using Azure;
 using Dima.Api.Data;
+using Dima.Api.Handlers;
+using Dima.Core.Hendlers;
 using Dima.Core.Models;
+using Dima.Core.Requests.Categories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +23,7 @@ builder.Services.AddSwaggerGen(x =>
 });
 
 
-builder.Services.AddTransient<Handler>();
+builder.Services.AddTransient<ICategoryHandler, CategoryHandler>();
 
 var app = builder.Build();
 
@@ -31,11 +35,21 @@ app.UseSwaggerUI();
 //Get, Put, Post, Delete
 
 app.MapPost(
-    "/v1/trasactions",
-    (Request request, Handler handler) => handler.Handle(request))
-    .WithName("Transactions/Create")
-    .WithSummary("Create a new trasnaction")
-    .Produces<Response>();
+    "/v1/categories",
+    (CreateCategoryRequest request, ICategoryHandler handler) => handler.CreateAsync(request))
+    .WithName("Categories - Create")
 
+    .WithSummary("Create a new category")
+    .Produces<Response<Category>>();
+
+
+app.MapPut(
+    "/v1/categories",
+    (UpdateCategoryRequest request, ICategoryHandler handler) => handler.UpdateAsync(request))
+    .WithName("Categories - update")
+
+    .WithSummary("update a new category")
+    .Produces<Response<Category>>();
 
 app.Run();
+
