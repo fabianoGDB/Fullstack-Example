@@ -28,7 +28,7 @@ namespace Dima.Api.Handlers
                 await context.Categories.AddAsync(category);
                 await context.SaveChangesAsync();
 
-                return new Response<Category>(category, 201, "Created");
+                return new Response<Category?>(category, 201, "Created");
             }
             catch (Exception ex)
             {
@@ -40,7 +40,30 @@ namespace Dima.Api.Handlers
 
         public async Task<Response<Category?>> DaleteAsync(DeleteCategoryRequest request)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+
+                var category = await context.Categories.FirstOrDefaultAsync(x => x.Id == request.Id);
+
+                if (category == null)
+                {
+                    return new Response<Category?>(null, 404, "Category notfound");
+                }
+
+                if (category != null)
+                {
+                    context.Categories.Remove(category);
+                    await context.SaveChangesAsync();
+                }
+
+                return new Response<Category?>(category, 200, "Deleted");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return new Response<Category?>(null, 500, ex.Message);
+            }
         }
 
         public Task<Response<List<Category>>> GetAllAsync(GetAllCategoriesRequest request)
@@ -48,9 +71,26 @@ namespace Dima.Api.Handlers
             throw new NotImplementedException();
         }
 
-        public Task<Response<Category?>> GetByIdAsync(GetCategoryByIdRequest request)
+        public async Task<Response<Category?>> GetByIdAsync(GetCategoryByIdRequest request)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+
+                var category = await context.Categories.FirstOrDefaultAsync(x => x.Id == request.Id);
+
+                if (category == null)
+                {
+                    return new Response<Category?>(null, 404, "Category not found");
+                }
+
+                return new Response<Category?>(category, 200, "Succes");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return new Response<Category?>(null, 500, ex.Message);
+            }
         }
 
         public async Task<Response<Category?>> UpdateAsync(UpdateCategoryRequest request)
