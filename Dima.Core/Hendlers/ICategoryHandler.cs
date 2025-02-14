@@ -15,6 +15,6 @@ namespace Dima.Core.Hendlers
         Task<Response<Category?>> UpdateAsync(UpdateCategoryRequest request);
         Task<Response<Category?>> DaleteAsync(DeleteCategoryRequest request);
         Task<Response<Category?>> GetByIdAsync(GetCategoryByIdRequest request);
-        Task<Response<List<Category>>> GetAllAsync(GetAllCategoriesRequest request);
+        Task<PagedResponse<List<Category>>> GetAllAsync(GetAllCategoriesRequest request);
     }
 }

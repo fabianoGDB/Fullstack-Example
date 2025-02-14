@@ -66,9 +66,29 @@ namespace Dima.Api.Handlers
             }
         }
 
-        public Task<Response<List<Category>>> GetAllAsync(GetAllCategoriesRequest request)
+        public async Task<PagedResponse<List<Category>>> GetAllAsync(GetAllCategoriesRequest request)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+                var query = context.Categories.AsNoTracking().Where(x => x.UserId == request.UserId);
+
+
+                var categories = await query
+                .Skip(request.PageSize * request.PageNumber)
+                .Take(request.PageSize)
+                .ToListAsync();
+
+                var count = await query
+                .CountAsync();
+
+                return new PagedResponse<List<Category>>(categories, count, request.PageNumber, request.PageSize);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return new PagedResponse<List<Category>>(null, 500, ex.Message);
+            }
         }
 
         public async Task<Response<Category?>> GetByIdAsync(GetCategoryByIdRequest request)
@@ -77,7 +97,7 @@ namespace Dima.Api.Handlers
             {
 
 
-                var category = await context.Categories.FirstOrDefaultAsync(x => x.Id == request.Id);
+                var category = await context.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.Id == request.Id);
 
                 if (category == null)
                 {
