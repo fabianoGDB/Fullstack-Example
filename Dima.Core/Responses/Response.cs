@@ -14,10 +14,10 @@ namespace Dima.Core.Responses
         [JsonConstructor]
         public Response()
         {
-            _code = Configration.DefaultStatusCode;
+            _code = Configuration.DefaultStatusCode;
         }
 
-        public Response(TData? data, int code = Configration.DefaultStatusCode, string? message = null)
+        public Response(TData? data, int code = Configuration.DefaultStatusCode, string? message = null)
         {
             Data = data;
             Message = message;

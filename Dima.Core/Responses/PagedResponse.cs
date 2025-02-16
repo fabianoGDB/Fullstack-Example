@@ -18,7 +18,7 @@ namespace Dima.Core.Responses
 
 
         [JsonConstructor]
-        public PagedResponse(TData? data, int totalCount = 0, int currentPage = 1, int pageSize = Configration.PageSize) : base(data)
+        public PagedResponse(TData? data, int totalCount = 0, int currentPage = 1, int pageSize = Configuration.PageSize) : base(data)
         {
             Data = data;
             TotalCount = totalCount;
@@ -27,8 +27,8 @@ namespace Dima.Core.Responses
         }
 
         public int CurrentPage { get; set; }
-        public int TotalPage => (int)Math.Ceiling(TotalPage / (double)PageSize);
-        public int PageSize { get; set; } = Configration.PageSize;
+        public int TotalPages => (int)Math.Ceiling(TotalCount / (double)PageSize);
+        public int PageSize { get; set; } = Configuration.PageSize;
         public int TotalCount { get; set; }
 
     }

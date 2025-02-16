@@ -7,8 +7,8 @@ namespace Dima.Core.Requests
 {
     public abstract class PagedRequest : BaseRequest
     {
-        public int PageNumber { get; set; } = Configration.PageNumber;
-        public int PageSize { get; set; } = Configration.PageSize;
+        public int PageNumber { get; set; } = Configuration.PageNumber;
+        public int PageSize { get; set; } = Configuration.PageSize;
 
     }
 }

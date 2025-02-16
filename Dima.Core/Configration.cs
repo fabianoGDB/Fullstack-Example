@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Dima.Core
 {
-    public static class Configration
+    public static class Configuration
     {
         public const int PageNumber = 1;
         public const int PageSize = 25;
