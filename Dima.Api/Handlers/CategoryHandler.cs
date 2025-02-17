@@ -74,13 +74,13 @@ namespace Dima.Api.Handlers
                 var query = context.Categories.AsNoTracking().Where(x => x.UserId == request.UserId);
 
 
-                var count = await query
-                .CountAsync();
-
                 var categories = await query
-                .Skip(request.PageSize * request.PageNumber)
+                .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .ToListAsync();
+
+                var count = await query
+                .CountAsync();
 
                 return new PagedResponse<List<Category>>(categories, count, request.PageNumber, request.PageSize);
             }
