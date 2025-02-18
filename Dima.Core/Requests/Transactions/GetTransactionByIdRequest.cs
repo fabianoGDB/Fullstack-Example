@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Dima.Core.Requests.Categories
+namespace Dima.Core.Requests.Transactions
 {
     public class GetTransactionByIdRequest : BaseRequest
     {

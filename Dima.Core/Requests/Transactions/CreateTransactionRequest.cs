@@ -7,7 +7,7 @@ using Dima.Core.Models;
 
 namespace Dima.Core.Requests.Transactions
 {
-    public class CreateTrasactionRequest : BaseRequest
+    public class CreateTransactionRequest : BaseRequest
     {
         [Required(ErrorMessage = "Titulo inválido")]
         public string Title { get; set; } = string.Empty;
