@@ -66,12 +66,42 @@ namespace Dima.Api.Handlers
 
         public async Task<PagedResponse<List<Transaction>>> GetAllAsync(GetAllTransactionsRequest request)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var transactions = await context.Transactions.Where(x => x.UserId == request.UserId).ToListAsync();
+
+                if (transactions == null)
+                {
+                    return new PagedResponse<List<Transaction?>>(null, 404, "Trasação não encontrada");
+                }
+
+                return new PagedResponse<List<Transaction>>(transactions, 200, "Succces");
+            }
+            catch
+            {
+
+                return new PagedResponse<List<Transaction?>>(null, 500, "Não foi possivel encontra");
+            }
         }
 
         public async Task<Response<Transaction?>> GetByIdAsync(GetTransactionByIdRequest request)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var transaction = await context.Transactions.FirstOrDefaultAsync(x => x.Id == request.Id && x.UserId == request.UserId);
+
+                if (transaction == null)
+                {
+                    return new Response<Transaction?>(null, 404, "Trasação não encontrada");
+                }
+
+                return new Response<Transaction?>(transaction, 200);
+            }
+            catch
+            {
+
+                return new Response<Transaction?>(null, 500, "Não foi possivel encontra");
+            }
         }
 
         public async Task<PagedResponse<List<Transaction>>> GetByPeriodAsync(GetTransactionsByPeriodRequest request)
