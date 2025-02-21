@@ -136,10 +136,9 @@ namespace Dima.Api.Handlers
 
                 return new Response<Category?>(category, 200, "Updated");
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine(ex);
-                return new Response<Category?>(null, 500, ex.Message);
+                return new Response<Category?>(null, 500, "erro ao fazer a atualização");
             }
         }
     }

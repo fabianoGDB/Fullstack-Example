@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dima.Api.Data;
+using Dima.Core.Common.Extensions;
 using Dima.Core.Hendlers;
 using Dima.Core.Models;
 using Dima.Core.Requests.Transactions;
@@ -72,7 +73,7 @@ namespace Dima.Api.Handlers
 
                 if (transactions == null)
                 {
-                    return new PagedResponse<List<Transaction?>>(null, 404, "Trasação não encontrada");
+                    return new PagedResponse<List<Transaction>>(null, 404, "Trasação não encontrada");
                 }
 
                 return new PagedResponse<List<Transaction>>(transactions, 200, "Succces");
@@ -80,7 +81,7 @@ namespace Dima.Api.Handlers
             catch
             {
 
-                return new PagedResponse<List<Transaction?>>(null, 500, "Não foi possivel encontra");
+                return new PagedResponse<List<Transaction>>(null, 500, "Não foi possivel encontra");
             }
         }
 
@@ -106,7 +107,40 @@ namespace Dima.Api.Handlers
 
         public async Task<PagedResponse<List<Transaction>>> GetByPeriodAsync(GetTransactionsByPeriodRequest request)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+                request.StartDate ??= DateTime.Now.GetFirstDay();
+                request.EndDate ??= DateTime.Now.GetLastDay();
+            }
+            catch
+            {
+                return new PagedResponse<List<Transaction>>(null, 500, "erro ao tentar converter a data passada");
+            }
+
+
+            try
+            {
+                var query = context.Transactions
+                .AsNoTracking()
+                .Where(x => x.CreatedAt >= request.StartDate && x.CreatedAt <= request.EndDate && x.UserId == request.UserId)
+                .OrderBy(x => x.CreatedAt);
+
+                var transactions = await query
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                    .Take(request.PageSize)
+                    .ToListAsync();
+
+                var count = await query
+                .CountAsync();
+
+                return new PagedResponse<List<Transaction>>(transactions, count, request.PageNumber, request.PageSize);
+            }
+            catch
+            {
+
+                return new PagedResponse<List<Transaction>>(null, 500, "Não foi possivel obter as transações");
+            }
         }
 
         public async Task<Response<Transaction?>> UpdateAsync(UpdateTransactionRequest request)
