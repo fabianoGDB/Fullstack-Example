@@ -73,7 +73,7 @@ namespace Dima.Api.Handlers
 
                 if (transactions == null)
                 {
-                    return new PagedResponse<List<Transaction>>(null, 404, "Trasação não encontrada");
+                    return new PagedResponse<List<Transaction>>(null, 404, "Transação não encontrada");
                 }
 
                 return new PagedResponse<List<Transaction>>(transactions, 200, "Succces");
@@ -81,7 +81,7 @@ namespace Dima.Api.Handlers
             catch
             {
 
-                return new PagedResponse<List<Transaction>>(null, 500, "Não foi possivel encontra");
+                return new PagedResponse<List<Transaction>>(null, 500, "Não foi possivel encontrar");
             }
         }
 
