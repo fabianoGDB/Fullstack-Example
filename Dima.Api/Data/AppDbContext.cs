@@ -5,11 +5,12 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Dima.Api.Data.Mappings;
 using Dima.Core.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dima.Api.Data
 {
-    public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+    public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext(options)
     {
         public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<Transaction> Transactions { get; set; } = null!;

@@ -19,6 +19,8 @@ builder.Services.AddDbContext<AppDbContext>(
     }
 );
 
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(x =>
 {
