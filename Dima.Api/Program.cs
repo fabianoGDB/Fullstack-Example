@@ -1,6 +1,7 @@
 using Dima.Api.Data;
 using Dima.Api.Endpoints.Categories;
 using Dima.Api.Handlers;
+using Dima.Api.Models;
 using Dima.Core.Hendlers;
 using Dima.Core.Models;
 using Dima.Core.Requests.Categories;
@@ -30,6 +31,8 @@ builder.Services.AddSwaggerGen(x =>
 
 builder.Services.AddTransient<ICategoryHandler, CategoryHandler>();
 builder.Services.AddTransient<ITransactionHandler, TransactionHandler>();
+
+builder.Services.AddIdentityCore<User>().AddRoles<IdentityRole<long>>().AddEntityFrameworkStores<AppDbContext>().AddApiEndpoints();
 
 builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme).AddIdentityCookies();
 builder.Services.AddAuthorization();
