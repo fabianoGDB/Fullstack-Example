@@ -52,7 +52,12 @@ app.MapGroup("v1/identity")
 
 app.MapGroup("v1/identity")
     .WithTags("Identity")
-    .MapPost("/logout", () => { });
+    .MapPost("/logout", async (SignInManager<User> signInManager) =>
+    {
+        await signInManager.SignOutAsync();
+        return Results.Ok();
+    })
+    .RequireAuthorization();
 
 app.Run();
 
