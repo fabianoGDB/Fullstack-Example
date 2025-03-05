@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Dima.Api.Data;
 using Dima.Api.Endpoints.Categories;
 using Dima.Api.Handlers;
@@ -56,6 +57,29 @@ app.MapGroup("v1/identity")
     {
         await signInManager.SignOutAsync();
         return Results.Ok();
+    })
+    .RequireAuthorization();
+
+app.MapGroup("v1/identity")
+    .WithTags("Identity")
+    .MapGet("/roles", async (ClaimsPrincipal user) =>
+    {
+        if (user.Identity is null || !user.Identity.IsAuthenticated)
+        {
+            return Results.Unauthorized();
+        }
+
+        var identity = (ClaimsIdentity)user.Identity;
+        var roles = identity.FindAll(identity.RoleClaimType).Select(c => new
+        {
+            c.Issuer,
+            c.OriginalIssuer,
+            c.Type,
+            c.Value,
+            c.ValueType
+        });
+
+        return TypedResults.Json(roles);
     })
     .RequireAuthorization();
 
